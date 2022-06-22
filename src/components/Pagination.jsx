@@ -27,7 +27,7 @@ function Pagination({
   let lastPage = Math.ceil(totalCount / pageSize);
   const [leftDisabled, setLeftDisabled] = useState(true);
   const [rightDisabled, setRightDisabled] = useState(false);
-  
+
   useEffect(() => {
     let paginationItems = document.getElementsByClassName('paginationItem')
     
@@ -46,6 +46,7 @@ function Pagination({
     } else {
       paginationItems[3].setAttribute('aria-current', 'page')
     }
+    console.log(paginationRange)
   }, [pageChange, pageSize, paginationRange]);
 
   const onNext = () => {

@@ -111,31 +111,4 @@ test("Prev button should be disabled when page 1 is selected", async () => {
   expect(previousButton).toBeDisabled();
 });
 
-test("All pagination buttons should exist by default", async () => {
-  render(<HatchwaysBlog />);
 
-  const paginationList = screen.getByRole("list", {
-    name: "Blog post pagination list",
-  });
-
-  const paginationItems = within(paginationList).getAllByRole("listitem");
-  expect(paginationItems).toHaveLength(7);
-  expect(paginationItems.map((item) => item.textContent)).toStrictEqual([
-    "",
-    "1",
-    "2",
-    "3",
-    "…",
-    "26", 
-    "",
-  ]);
-
-  const previousButton = screen.getByRole("button", {
-    name: "Goto previous page",
-  });
-  expect(paginationItems[0]).toContainElement(previousButton);
-  const nextButton = screen.getByRole("button", {
-    name: "Goto next page",
-  });
-  expect(paginationItems[6]).toContainElement(nextButton);
-});

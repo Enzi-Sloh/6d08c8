@@ -126,11 +126,7 @@ test("All pagination buttons should exist by default", async () => {
     "2",
     "3",
     "…",
-<<<<<<< Updated upstream
-    "44",
-=======
     "26", 
->>>>>>> Stashed changes
     "",
   ]);
 

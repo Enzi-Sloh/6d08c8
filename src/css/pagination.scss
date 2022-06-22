@@ -51,12 +51,7 @@
     margin: 5px 10px;
   }
   .invis {
-    position: absolute;
-    top: 0px;
-    visibility: hidden;
-    margin: 0;
-    height: 0;
-    width: 0;
+    display: none;
   }
   .paginationSelector {
     background-color: transparent;

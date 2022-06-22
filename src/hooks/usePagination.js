@@ -1,5 +1,5 @@
 export const DOTS = "...";
-export const Invis = "1";
+export const Invis = "";
 import React, { useState } from "react";
 
 function usePagination(props) {
@@ -29,7 +29,7 @@ function usePagination(props) {
     if (currentPage == lastPage) {
       return [1, Invis, Invis, DOTS, pageBefore, previousPage, currentPage];
     } else {
-      return [1, Invis, Invis, DOTS, pageBefore, currentPage, lastPage];
+      return [1, Invis, Invis, DOTS, previousPage, currentPage, lastPage];
     }
   } else if (
     currentPage != 1 &&

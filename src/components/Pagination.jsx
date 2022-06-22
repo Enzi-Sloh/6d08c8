@@ -29,19 +29,24 @@ function Pagination({
   const [rightDisabled, setRightDisabled] = useState(false);
 
   useEffect(() => {
+    let paginationItems = document.getElementsByClassName('paginationItem')
+    
     if (keyRef[0] == keyRef[pageChange - 1]) {
-      keyRef[0].current.ariaCurrent = "page";
+      paginationItems[1].setAttribute('aria-current', 'page')
+      paginationRange.splice(4,2)
     } else if (pageChange == 2) {
-      keyRef[1].current.ariaCurrent = "page";
+      paginationItems[2].setAttribute('aria-current', 'page')
+      paginationRange.splice(4,2)
     } else if (pageChange == lastPage) {
-      keyRef[6].current.ariaCurrent = "page";
+      paginationItems[4].setAttribute('aria-current', 'page')
+      paginationRange.splice(1,2)
     } else if (pageChange == lastPage - 1) {
-      keyRef[5].current.ariaCurrent = "page";
+      paginationItems[3].setAttribute('aria-current', 'page')
+      paginationRange.splice(1,2)
     } else {
-      keyRef[3].current.ariaCurrent = "page";
-      console.log("yayayy");
+      paginationItems[3].setAttribute('aria-current', 'page')
     }
-  }, [pageChange]);
+  }, [pageChange,pageSize]);
 
   const onNext = () => {
     if (currentPage != lastPage) {
@@ -117,7 +122,6 @@ function Pagination({
         if (pageNumber === Invis) {
           return <li key={key} className="invis"></li>;
         }
-        console.log(paginationRange);
         return (
           <li
             key={key}

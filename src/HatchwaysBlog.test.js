@@ -126,7 +126,7 @@ test("All pagination buttons should exist by default", async () => {
     "2",
     "3",
     "…",
-    "44", 
+    "26", 
     "",
   ]);
 

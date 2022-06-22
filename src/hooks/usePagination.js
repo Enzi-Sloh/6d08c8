@@ -1,5 +1,5 @@
 export const DOTS = "...";
-export const Invis = "";
+export const Invis = "1";
 import React, { useState } from "react";
 
 function usePagination(props) {

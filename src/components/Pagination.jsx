@@ -27,6 +27,7 @@ function Pagination({
   let lastPage = Math.ceil(totalCount / pageSize);
   const [leftDisabled, setLeftDisabled] = useState(true);
   const [rightDisabled, setRightDisabled] = useState(false);
+  paginationRange.splice(4,2)
 
   useEffect(() => {
     let paginationItems = document.getElementsByClassName('paginationItem')
@@ -190,7 +191,6 @@ Pagination.propTypes = {
   pageSizeOptions: PropTypes.instanceOf(Array),
   onPageChange: PropTypes.func,
   onPageSizeOptionChange: PropTypes.func,
-  leftDisabled: PropTypes.bool,
 };
 
 Pagination.defaultProps = {
@@ -200,7 +200,6 @@ Pagination.defaultProps = {
   pageSizeOptions: [15, 25, 50, 100],
   onPageChange: () => {},
   onPageSizeOptionChange: () => {},
-  leftDisabled: false,
 };
 
 export default Pagination;

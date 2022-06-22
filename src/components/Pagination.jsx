@@ -46,7 +46,6 @@ function Pagination({
     } else {
       paginationItems[3].setAttribute('aria-current', 'page')
     }
-    console.log(paginationRange)
   }, [pageChange, pageSize, paginationRange]);
 
   const onNext = () => {

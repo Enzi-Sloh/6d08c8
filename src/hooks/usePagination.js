@@ -1,6 +1,5 @@
 export const DOTS = "...";
 export const Invis = "";
-import React, { useState } from "react";
 
 function usePagination(props) {
   let lastPage = Math.ceil(props.totalCount / props.pageSize);

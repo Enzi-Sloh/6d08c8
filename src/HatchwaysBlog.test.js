@@ -110,5 +110,3 @@ test("Prev button should be disabled when page 1 is selected", async () => {
 
   expect(previousButton).toBeDisabled();
 });
-
-

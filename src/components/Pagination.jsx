@@ -1,11 +1,14 @@
 import "../css/pagination.scss";
 
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
-import usePagination, { DOTS } from "../hooks/usePagination";
+import usePagination, { DOTS, Invis } from "../hooks/usePagination";
 
-import PropTypes from "prop-types";
-import React from "react";
+import PropTypes, { bool } from "prop-types";
+import React, { useState, useRef, useEffect } from "react";
 import { nanoid } from "nanoid";
+
+export let currentPageSize = 0;
+export let pageChange = 1;
 
 function Pagination({
   onPageChange,
@@ -20,13 +23,69 @@ function Pagination({
     totalCount,
     pageSize,
   });
+  const keyRef = [];
+  let lastPage = Math.ceil(totalCount / pageSize);
+  const [leftDisabled, setLeftDisabled] = useState(true);
+  const [rightDisabled, setRightDisabled] = useState(false);
+
+  useEffect(() => {
+    let paginationItems = document.getElementsByClassName('paginationItem')
+    
+    if (keyRef[0] == keyRef[pageChange - 1]) {
+      paginationItems[1].setAttribute('aria-current', 'page')
+      paginationRange.splice(4,2)
+    } else if (pageChange == 2) {
+      paginationItems[2].setAttribute('aria-current', 'page')
+      paginationRange.splice(4,2)
+    } else if (pageChange == lastPage) {
+      paginationItems[4].setAttribute('aria-current', 'page')
+      paginationRange.splice(1,2)
+    } else if (pageChange == lastPage - 1) {
+      paginationItems[3].setAttribute('aria-current', 'page')
+      paginationRange.splice(1,2)
+    } else {
+      paginationItems[3].setAttribute('aria-current', 'page')
+    }
+  }, [pageChange, pageSize, paginationRange]);
 
   const onNext = () => {
-    onPageChange(currentPage + 1);
+    if (currentPage != lastPage) {
+      pageChange += 1;
+      onPageChange((currentPage += 1));
+    }
+    if (currentPage == lastPage) {
+      setRightDisabled(true);
+    } else {
+      setRightDisabled(false);
+      setLeftDisabled(false);
+    }
   };
 
   const onPrevious = () => {
-    onPageChange(currentPage - 1);
+    if (currentPage != 1) {
+      pageChange -= 1;
+      onPageChange((currentPage -= 1));
+    }
+    if (currentPage == 1) {
+      setLeftDisabled(true);
+    } else {
+      setLeftDisabled(false);
+      setRightDisabled(false);
+    }
+  };
+  const onSelect = (num) => {
+    pageChange = num;
+    onPageChange((currentPage = num));
+    if (pageChange == 1) {
+      setLeftDisabled(true);
+      setRightDisabled(false);
+    } else if (pageChange == lastPage) {
+      setRightDisabled(true);
+      setLeftDisabled(false);
+    } else {
+      setLeftDisabled(false);
+      setRightDisabled(false);
+    }
   };
 
   return (
@@ -42,7 +101,7 @@ function Pagination({
           // Do not remove the aria-label below, it is used for Hatchways automation.
           aria-label="Goto previous page"
           onClick={onPrevious}
-          disabled={false} // change this line to disable a button.
+          disabled={leftDisabled} // change this line to disable a button.
         >
           <ChevronLeftIcon />
         </button>
@@ -50,6 +109,8 @@ function Pagination({
 
       {paginationRange.map((pageNumber) => {
         const key = nanoid();
+        const refCheck = useRef();
+        keyRef.push(refCheck);
 
         if (pageNumber === DOTS) {
           return (
@@ -58,10 +119,13 @@ function Pagination({
             </li>
           );
         }
-
+        if (pageNumber === Invis) {
+          return <li key={key} className="invis"></li>;
+        }
         return (
           <li
             key={key}
+            ref={refCheck}
             className="paginationItem"
             aria-current="false" // change this line to highlight a current page.
           >
@@ -69,7 +133,7 @@ function Pagination({
               type="button"
               // Do not remove the aria-label below, it is used for Hatchways automation.
               aria-label={`Goto page ${pageNumber}`}
-              onClick={() => onPageChange(pageNumber)}
+              onClick={() => onSelect(pageNumber)}
             >
               {pageNumber}
             </button>
@@ -84,7 +148,7 @@ function Pagination({
           // Do not remove the aria-label below, it is used for Hatchways automation.
           aria-label="Goto next page"
           onClick={onNext}
-          disabled={false} // change this line to disable a button.
+          disabled={rightDisabled} // change this line to disable a button.
         >
           <ChevronRightIcon />
         </button>
@@ -96,7 +160,17 @@ function Pagination({
         aria-label="Select page size"
         value={pageSize}
         onChange={(e) => {
-          onPageSizeOptionChange(e.target.value);
+          if (e.target.value == pageSizeOptions[0]) {
+            currentPageSize = 0;
+          } else if (e.target.value == pageSizeOptions[1]) {
+            currentPageSize = 1;
+          } else if (e.target.value == pageSizeOptions[2]) {
+            currentPageSize = 2;
+          } else if (e.target.value == pageSizeOptions[3]) {
+            currentPageSize = 3;
+          }
+          pageChange = 1;
+          onPageSizeOptionChange(pageSizeOptions[currentPageSize]);
         }}
       >
         {pageSizeOptions.map((size) => (
